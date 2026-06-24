@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>FTP Storage</title>
+
+<link rel="stylesheet" href="/static/style.css">
+<link rel="icon" type= "image/x-icon" href="/static/favicon.ico">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+<span>
+<img src="/static/favicon.ico">
+<h2>Secure FTP Storage</h2>
+</span>
+<span>
+<a class="logout" href="/about">About</a>
+<a class="logout" href="/logout">Logout</a>
+</span>
+</div>
+
+<div class="file-grid">
+
+{% for file in files %}
+
+<div class="file-tile">
+
+<div class="thumbnail">
+📄
+</div>
+
+<div class="filename">
+{{file}}
+</div>
+
+<div class="actions">
+
+<a href="/download/{{file}}">download</a>
+
+<form action="/delete/{{file}}" method="post" style="display:inline;">
+<button type="submit">delete</button>
+</form>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+<div class="upload-box">
+
+<h3>Upload file</h3>
+
+<form action="/upload" method="post" enctype="multipart/form-data">
+
+<input type="file" name="file"><br>
+
+<input type="submit" value="Upload">
+
+</form>
+
+</div>
+
+</div>
+
+</body>
+</html>

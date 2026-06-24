@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>USB FTP Login</title>
+<link rel= "stylesheet" href= "/static/style.css">
+<link rel= "icon" type= "image/x-icon" href= "/static/favicon.ico">
+</head>
+
+<body>
+
+<div class="header">
+    <h2>USB Token Authentication</h2>
+    <a class="logout" href="/about">About</a>
+</div>
+
+<div>
+
+    Username:<br>
+    <input type="text" id="username"><br><br>
+
+    Password:<br>
+    <input type="password" id="password"><br><br>
+
+    USB Secret File:<br>
+    <input type="file" id="usbfile"><br><br>
+
+    <button onclick="login()">Login</button>
+
+</div>
+
+<script>
+
+async function login() {
+
+    const username =
+        document.getElementById("username").value;
+
+    const password =
+        document.getElementById("password").value;
+
+    const file =
+        document.getElementById("usbfile").files[0];
+
+    if (!username || !password || !file) {
+        alert("Missing fields");
+        return;
+    }
+
+    // STEP 1
+    // request challenge from server
+
+    const start = await fetch("/login/start", {
+
+        method: "POST",
+
+        body: new URLSearchParams({
+            username: username
+        })
+
+    });
+
+    if (!start.ok) {
+        alert("Unable to start login");
+        return;
+    }
+
+    const startData = await start.json();
+
+    const challenge = startData.challenge;
+
+    // STEP 2
+    // read USB secret
+
+    const secret =
+        (await file.text()).trim();
+
+    // STEP 3
+    // compute HMAC(challenge)
+
+    const encoder = new TextEncoder();
+
+    const key = await crypto.subtle.importKey(
+
+        "raw",
+
+        encoder.encode(secret),
+
+        {
+            name: "HMAC",
+            hash: "SHA-256"
+        },
+
+        false,
+
+        ["sign"]
+
+    );
+
+    const signature = await crypto.subtle.sign(
+
+        "HMAC",
+
+        key,
+
+        encoder.encode(challenge)
+
+    );
+
+    // STEP 4
+    // convert signature to base64
+
+    const bytes = new Uint8Array(signature);
+
+    let binary = "";
+
+    bytes.forEach(b => {
+        binary += String.fromCharCode(b);
+    });
+
+    const response = btoa(binary);
+
+    // STEP 5
+    // send proof to server
+
+    const verify = await fetch("/login/verify", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+
+            username: username,
+            password: password,
+            response: response
+
+        })
+
+    });
+
+    if (verify.ok) {
+
+        window.location = "/files";
+
+    } else {
+
+        const text = await verify.text();
+
+        alert("Authentication failed: " + text);
+    }
+}
+
+</script>
+
+</body>
+</html>

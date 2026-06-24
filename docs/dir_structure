@@ -1,0 +1,22 @@
+/opt/usb_auth
+├── bin
+│   └── check_token.sh
+├── docs
+│   └── dir_structure
+├── logs
+│   ├── auth.log
+│   └── auth.log-20260415
+├── tokens
+│   ├── alice.hash
+│   ├── bob.hash
+│   └── ftpclient.hash
+└── web
+    ├── app.py
+    ├── static
+    │   ├── favicon.ico
+    │   └── style.css
+    └── templates
+        ├── dashboard.html
+        └── login.html
+
+8 directories, 12 files
