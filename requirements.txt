@@ -1,0 +1,6 @@
+# Requirements for FileKeeper
+Flask>=2.0,<3.0
+# ftplib is stdlib (no package required)
+# Optional for production deployment
+gunicorn>=20.1.0
+python-dotenv>=1.0.0
