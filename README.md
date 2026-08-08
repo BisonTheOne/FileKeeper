@@ -81,6 +81,3 @@ web/                    # Flask app and web assets
 
 Feel free to open issues or PRs. If you change authentication or storage, include migration/deployment notes.
 
-## License
-
-Add a LICENSE file to indicate how this project may be used.
