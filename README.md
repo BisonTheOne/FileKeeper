@@ -70,12 +70,12 @@ web/                    # Flask app and web assets
   static/               # CSS, favicon
 ```
 
-## Next steps / Suggestions
+## Next steps 
 
-- Add a `requirements.txt` or `pyproject.toml` with pinned dependencies.
-- Add a Dockerfile and/or systemd unit for deployment.
-- Replace filesystem-based secrets with a safer secret store or at least document secret creation steps more fully.
-- Add tests around the authentication flow and FTP interactions (mock FTP server).
+- Adding a `requirements.txt` or `pyproject.toml` with pinned dependencies.
+- Adding a Dockerfile and/or systemd unit for deployment.
+- Replacing filesystem-based secrets with a safer secret store or at least document secret creation steps more fully.
+- Adding tests around the authentication flow and FTP interactions (mock FTP server).
 
 ## Contributing
 
